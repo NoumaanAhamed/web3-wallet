@@ -1,50 +1,66 @@
-# React + TypeScript + Vite
+# Solana Wallet Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+The Solana Wallet Generator is a React-based web application that allows users to generate multiple Solana wallets from a single mnemonic phrase. Users can either use an automatically generated mnemonic or input their own custom mnemonic. The application provides both public and private keys for each generated wallet.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Generate a random mnemonic phrase
+- Option to use a custom mnemonic phrase
+- Generate multiple Solana wallets from a single mnemonic
+- Display public and private keys for each generated wallet
+- User-friendly interface with clear instructions
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technologies Used
 
-- Configure the top-level `parserOptions` property like this:
+- React
+- TypeScript
+- bip39 (for mnemonic generation and validation)
+- ed25519-hd-key (for key derivation)
+- @solana/web3.js (for Solana-specific functionality)
+- tweetnacl (for cryptographic operations)
+- UI components from a custom UI library (likely shadcn/ui based on import statements)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation
+
+1. Clone the repository
+2. Navigate to the project directory
+3. Install dependencies using npm or yarn:
+
+```bash
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+4. Start the development server:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+## Usage
+
+1. Open the application in your web browser.
+2. You'll see a generated mnemonic phrase displayed.
+3. If you want to use your own mnemonic, toggle the "Use custom mnemonic" switch and enter your phrase.
+4. Click the "Generate New Wallet" button to create a new wallet.
+5. Each generated wallet will be displayed with its public and private keys.
+6. Repeat step 4 to generate additional wallets using the same mnemonic.
+
+## Security Considerations
+
+- This application is for educational and testing purposes only.
+- Never share your mnemonic phrase or private keys with anyone.
+- For production use, consider implementing additional security measures and handling private keys server-side.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Disclaimer
+
+This software is provided "as is", without warranty of any kind. Use at your own risk.
