@@ -4,6 +4,7 @@ import { derivePath } from "ed25519-hd-key";
 import { Keypair } from "@solana/web3.js";
 import { ethers } from "ethers";
 import bs58 from "bs58";
+import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -37,6 +38,20 @@ const BlockchainWalletGenerator: React.FC = () => {
     const [showMnemonic, setShowMnemonic] = useState<boolean>(false);
     const [showPrivateKeys, setShowPrivateKeys] = useState<boolean[]>([]);
     const [selectedBlockchain, setSelectedBlockchain] = useState<SupportedBlockchain>('solana');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedWallets = localStorage.getItem('wallets');
+        if (storedWallets) {
+            setWallets(JSON.parse(storedWallets));
+            setShowPrivateKeys(JSON.parse(localStorage.getItem('showPrivateKeys') || '[]'));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('wallets', JSON.stringify(wallets));
+        localStorage.setItem('showPrivateKeys', JSON.stringify(showPrivateKeys));
+    }, [wallets, showPrivateKeys]);
 
     useEffect(() => {
         if (!mnemonic) {
@@ -100,6 +115,10 @@ const BlockchainWalletGenerator: React.FC = () => {
     const deleteWallet = (index: number) => {
         setWallets(prevWallets => prevWallets.filter((_, i) => i !== index));
         setShowPrivateKeys(prevState => prevState.filter((_, i) => i !== index));
+    };
+
+    const handleWalletClick = (wallet: Wallet) => {
+        navigate(`/wallet/${wallet.blockchain}/${wallet.publicKey}`);
     };
 
     return (
@@ -177,7 +196,11 @@ const BlockchainWalletGenerator: React.FC = () => {
                                     <div className="space-y-4">
                                         <h3 className="text-lg font-semibold">Generated Wallets:</h3>
                                         {wallets.map((wallet, index) => (
-                                            <Card key={index} className="p-4">
+                                            <Card
+                                                key={index}
+                                                className="p-4 cursor-pointer"
+                                                onClick={() => handleWalletClick(wallet)}
+                                            >
                                                 <div className="flex justify-between items-center mb-2">
                                                     <h4 className="font-semibold">
                                                         {wallet.blockchain.charAt(0).toUpperCase() + wallet.blockchain.slice(1)} Wallet {index + 1}
@@ -185,7 +208,10 @@ const BlockchainWalletGenerator: React.FC = () => {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => deleteWallet(index)}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            deleteWallet(index);
+                                                        }}
                                                     >
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>
@@ -197,7 +223,10 @@ const BlockchainWalletGenerator: React.FC = () => {
                                                         <Button
                                                             variant="ghost"
                                                             size="sm"
-                                                            onClick={() => togglePrivateKey(index)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                togglePrivateKey(index);
+                                                            }}
                                                         >
                                                             {showPrivateKeys[index] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                                         </Button>
@@ -207,6 +236,7 @@ const BlockchainWalletGenerator: React.FC = () => {
                                                     </p>
                                                 </div>
                                             </Card>
+
                                         ))}
                                     </div>
                                 )}
