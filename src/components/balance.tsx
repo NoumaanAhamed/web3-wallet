@@ -4,7 +4,6 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import process from 'process';
 
 interface WalletDetails {
     publicKey: string;
